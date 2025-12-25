@@ -3,6 +3,7 @@
 /videos
 /images
 /slides
+/slides_assets
 __pycache__/
 
 # Manim cache files
@@ -20,3 +21,5 @@ ENV
 
 # Optional: if you use a custom config file
 # /custom_config.yml
+.manim-slides.toml
+slides.html
