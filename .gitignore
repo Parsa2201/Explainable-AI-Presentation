@@ -2,6 +2,7 @@
 /media
 /videos
 /images
+/slides
 __pycache__/
 
 # Manim cache files
