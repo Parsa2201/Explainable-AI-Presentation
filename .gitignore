@@ -1,0 +1,21 @@
+# Manim generated files
+/media
+/videos
+/images
+__pycache__/
+
+# Manim cache files
+*.pyc
+.cache
+
+# Python environment
+.venv
+venv
+ENV
+
+# IDE files
+.vscode
+.idea
+
+# Optional: if you use a custom config file
+# /custom_config.yml
