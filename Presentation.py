@@ -7,6 +7,8 @@ from util.table_of_contents import show_toc
 from src.Ali import ali
 from src.Parsa import parsa
 
+Text.set_default(font="Consolas") 
+
 toc_items = [
     "1. Introduction",
     # new items come here
@@ -14,13 +16,13 @@ toc_items = [
 
 class Presentation(ThreeDSlide):
     def construct(self):
-        t1 = Text("Explainable AI", font_size=42)
-        t2 = Text("in Sparse Transformers", font_size=42).next_to(t1, DOWN, buff=0.5)
-        t3 = Text("Presenters: Parsa Salamatipour & Ali Hasan Yazdi", font_size=20).next_to(t2, DOWN, buff=1)
-        t4 = Text("Professor: Dr. Nazerfard", font_size=20).next_to(t3, DOWN, buff=0.2)
+        t1 = Tex("Explainable AI", font_size=42)
+        t2 = Tex("in Sparse Transformers", font_size=42).next_to(t1, DOWN, buff=0.5)
+        t3 = Tex("Presenters: Parsa Salamatipour \& Ali Hasan Yazdi", font_size=20).next_to(t2, DOWN, buff=1)
+        t4 = Tex("Professor: Dr. Nazerfard", font_size=20).next_to(t3, DOWN, buff=0.2)
         title = VGroup(
             t1, t2, t3, t4
-        ).to_edge(UP)
+        ).move_to(ORIGIN)
 
         # Create a small cube
         cube = Cube(side_length=0.5, fill_opacity=0.5).scale(4)
@@ -33,7 +35,7 @@ class Presentation(ThreeDSlide):
         self.play(Unwrite(title))
         self.wait(1)
 
-        self.next_slide()
+        # self.next_slide()
 
         show_toc(self, toc_items)
 

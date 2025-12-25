@@ -20,6 +20,16 @@ slides_config() {
     manim-slides wizard "$@"
 }
 
+render_show() {
+    render
+    show
+}
+
+render_show_html() {
+    render
+    show_html
+}
+
 cmd="$1"
 shift   # remove the flag, leave the rest in "$@"
 
@@ -38,6 +48,12 @@ case "$cmd" in
         ;;
     --slides-config)
         slides_config "$@"
+        ;;
+    --render-show)
+        render_show "$@"
+        ;;
+    --render-show-html)
+        render_show_html "$@"
         ;;
     *)
         echo "Unknown option: $cmd"
