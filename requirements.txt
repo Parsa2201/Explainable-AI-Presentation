@@ -1,0 +1,4 @@
+numpy
+manim
+manim-slides[manim]
+PyQt6
