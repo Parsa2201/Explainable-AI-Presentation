@@ -4,6 +4,7 @@ from manim_slides.slide import ThreeDSlide
 from util.slide_number import SlideNumber
 from src.Transformer import TransformerSlides
 from src.SparseModel import SparseModelSlides
+from src.ModelCircuit import ModelCircuitSlides
 
 def parsa(scene: ThreeDSlide, slide_number: SlideNumber):
     title = Tex(r"\section*{What is Attention?}", font_size=48, color=BLUE).to_edge(UP)
@@ -19,3 +20,8 @@ def parsa(scene: ThreeDSlide, slide_number: SlideNumber):
     s.play_slide_two()
     s.play_slide_three()
     s.play_slide_four()
+
+    m = ModelCircuitSlides(scene)
+    m.show_circuit_from_pdf()
+
+    

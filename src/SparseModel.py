@@ -75,7 +75,7 @@ def create_mlp(layer_dims, p_sparsity):
     return layers, lines
 
 class SparseModelSlides:
-    def __init__(self, scene: Scene):
+    def __init__(self, scene: ThreeDSlide):
         self.scene = scene
         self.mobjects = {}
 
@@ -108,18 +108,21 @@ class SparseModelSlides:
         hidden_layer = dense_layers[1]
         target_neuron = hidden_layer[2]
 
+        my_template = TexTemplate()
+        my_template.add_to_preamble(r"\usepackage{fontawesome5}")
+
         # Concepts
         concepts = [
-            ("🐱 Cat", BLUE),
-            ("🚗 Car", RED),
-            ("📚 Book", GREEN)
+            (r"\faCat Cat", BLUE),
+            (r"\faCar Car", RED),
+            (r"\faBook Book", GREEN)
         ]
 
         # Create a stack of labels: "Below each other, on top of that neuron"
         # We create them all, arrange vertically, and place the group above the neuron
         concept_texts = VGroup()
         for text, color in concepts:
-            concept_texts.add(Text(text, font_size=32, color=color))
+            concept_texts.add(Tex(text, tex_template=my_template, font_size=32, color=color))
         
         concept_texts.arrange(DOWN, buff=0.15)
         concept_texts.next_to(target_neuron, UP, buff=0.5)
