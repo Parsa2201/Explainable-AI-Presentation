@@ -17,28 +17,22 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     inputs_label = Text("Inputs", font_size=32, color=GREEN).shift(LEFT * 4.5 + UP * 2)
 
     # Create input features
-    input_features = (
-        VGroup(
-            VGroup(
-                Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Tex(r"Age", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
-            ),
-            VGroup(
-                Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Tex(r"Income", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
-            ),
-            VGroup(
-                Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Tex(r"Credit", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
-            ),
-            VGroup(
-                Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Tex(r"History", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
-            ),
-        )
-        .arrange(DOWN, buff=0.4)
-        .shift(LEFT * 4.5 + DOWN * 0.5)
-    )
+    input_features_dots = VGroup(
+            *[
+                Circle(radius=0.2, color=GREEN, fill_opacity=0.3)
+                for _ in range(4)
+            ]
+        ).arrange(DOWN, buff=0.4).shift(LEFT * 3.5 + DOWN * 0.5)
+
+    input_features_labels = VGroup(
+            Tex(r"Age", font_size=24, color=WHITE),
+            Tex(r"Income", font_size=24, color=WHITE),
+            Tex(r"Credit Score", font_size=24, color=WHITE),
+            Tex(r"Employment Status", font_size=24, color=WHITE),
+        ).arrange(DOWN, buff=0.4, center=False)
+
+    for i, label in enumerate(input_features_labels):
+        label.next_to(input_features_dots[i], LEFT, buff=0.3)
 
     # Black box in the middle
     black_box = Rectangle(
@@ -67,7 +61,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
 
     # Arrows
     input_arrows = VGroup()
-    for feature in input_features:
+    for feature in input_features_dots:
         arrow = Arrow(
             start=feature.get_right() + RIGHT * 0.2,
             end=black_box.get_left() + LEFT * 0.1,
@@ -87,35 +81,36 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     )
 
     # Animate the scene
-    scene.play(Write(inputs_label))
     scene.play(
-        *[Create(feature[0]) for feature in input_features],
-        *[Write(feature[1]) for feature in input_features],
+        *[Create(feature) for feature in input_features_dots],
+        *[Write(label) for label in input_features_labels],
         lag_ratio=0.2,
-        run_time=2
+        run_time=1
     )
-    scene.wait(0.3)
+    scene.play(Write(inputs_label))
+    scene.wait(0.1)
 
-    scene.play(*[Create(arrow) for arrow in input_arrows], run_time=1)
-    scene.wait(0.3)
+    scene.play(*[Create(arrow) for arrow in input_arrows], run_time=0.5)
+    scene.wait(0.1)
 
-    scene.play(DrawBorderThenFill(black_box), Write(black_box_label), run_time=1.5)
+    scene.play(DrawBorderThenFill(black_box), Write(black_box_label), run_time=1)
+
+    scene.play(Create(output_arrow), run_time=0.5)
+    scene.play(Write(outputs_label))
+    scene.play(
+        Create(output_box[0]), Write(output_box[1]), Write(output_box[2]), run_time=1
+    )
+    scene.wait(1)
+
     scene.play(Write(question_mark), run_time=0.8)
     scene.wait(0.5)
 
-    scene.play(Create(output_arrow), run_time=1)
-    scene.play(Write(outputs_label))
-    scene.play(
-        Create(output_box[0]), Write(output_box[1]), Write(output_box[2]), run_time=1.5
-    )
-
-    scene.wait(1)
     scene.next_slide()
 
     # Fade out everything except the black box, its label, and question mark
     fade_out_objects = [
         title, inputs_label, outputs_label, output_box,
-        *input_features, *input_arrows, output_arrow
+        *input_features_dots, *input_features_labels, *input_arrows, output_arrow
     ]
     scene.play(*[FadeOut(mob) for mob in fade_out_objects], run_time=1)
 
