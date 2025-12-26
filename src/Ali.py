@@ -155,13 +155,13 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
 
     # Feature importance labels on the right
     feature_importance_label = Tex(r"Feature Importance", font_size=20, color=YELLOW)
-    feature_importance_label.next_to(transparent_box, RIGHT, buff=0.3).shift(UP * 1)
+    feature_importance_label.next_to(transparent_box, RIGHT, buff=1).shift(UP * 1)
 
     rules_label = Tex(r"Decision Rules", font_size=20, color=YELLOW)
-    rules_label.next_to(transparent_box, RIGHT, buff=0.3)
+    rules_label.next_to(transparent_box, RIGHT, buff=1)
 
     highlights_label = Tex(r"Key Factors", font_size=20, color=YELLOW)
-    highlights_label.next_to(transparent_box, RIGHT, buff=0.3).shift(DOWN * 1)
+    highlights_label.next_to(transparent_box, RIGHT, buff=1).shift(DOWN * 1)
 
     # Arrows from transparent box to explanations
     arrow_to_importance = Arrow(
@@ -169,7 +169,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
         end=feature_importance_label.get_left(),
         color=YELLOW,
         buff=0.1,
-        stroke_width=2,
+        stroke_width=3,
     )
 
     arrow_to_rules = Arrow(
@@ -177,7 +177,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
         end=rules_label.get_left(),
         color=YELLOW,
         buff=0.1,
-        stroke_width=2,
+        stroke_width=3,
     )
 
     arrow_to_highlights = Arrow(
@@ -185,7 +185,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
         end=highlights_label.get_left(),
         color=YELLOW,
         buff=0.1,
-        stroke_width=2,
+        stroke_width=3,
     )
 
     # Arrow from black box to transparent box (transformation arrow)
