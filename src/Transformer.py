@@ -1,6 +1,7 @@
 from manim import *
 import numpy as np
 import random
+from manim_slides.slide import ThreeDSlide
 
 # Define some consistent colors we might use across slides
 EMBEDDING_COLOR = BLUE
@@ -17,7 +18,7 @@ class TransformerSlides:
     A class to hold the animation logic for different slides
     in a presentation about Transformers.
     """
-    def __init__(self, scene: Scene, title: Text):
+    def __init__(self, scene: ThreeDSlide, title: Text):
         self.scene = scene
         self.title = title
 
@@ -160,6 +161,8 @@ class TransformerSlides:
         # 5. Show the final output
         self.scene.play(Create(arrow3), Write(output_label))
         self.scene.next_slide()
+
+        self.scene.play(Uncreate(arrow1), Uncreate(arrow2), Uncreate(arrow3), Uncreate(input_vec), Uncreate(attention_block), Uncreate(mlp_block), Unwrite(output_label))
 
 
     def create_mlp_diagram(self, n_inputs, n_outputs, color):
