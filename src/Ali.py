@@ -234,92 +234,37 @@ def ali(scene: ThreeDSlide):
         run_time=1.5
     )
 
-    scene.wait(1)
+    scene.wait(0.5)
     scene.next_slide()
 
-    # Fade out everything for next slide
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
 
     # ---------------------------
     # Decision Tree Explainability Scene
     # ---------------------------
     dtree_slide(scene)
-    scene.wait(1.5)
+    scene.wait(0.5)
     scene.next_slide()
 
-    # Fade out everything for next slide
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
 
     # ---------------------------
     # Explainability vs Predictive Power Trade-off Scene
     # ---------------------------
+    explain_predictive_slide(scene)
 
-    title = Tex(r"\section*{Explainability vs Predictive Power}", font_size=48, color=BLUE)
-    title.to_edge(UP, buff=0.5)
-    scene.play(Write(title))
     scene.wait(0.5)
-
-    # Create axes
-    axes = Axes(
-        x_range=[0, 10, 2],
-        y_range=[0, 10, 2],
-        x_length=8,
-        y_length=6,
-        axis_config={"color": WHITE, "include_numbers": False},
-        tips=True,
-    ).shift(DOWN * 0.3)
-
-    # Axis labels
-    x_label = Tex(r"Explainability", font_size=28, color=GREEN)
-    x_label.next_to(axes.x_axis, DOWN, buff=0.3)
-
-    y_label = Tex(r"Predictive Power / Accuracy", font_size=28, color=RED)
-    y_label.rotate(90 * DEGREES).next_to(axes.y_axis, LEFT, buff=0.3)
-
-    # Draw axes
-    scene.play(Create(axes), Write(x_label), Write(y_label), run_time=1.5)
-    scene.wait(0.5)
-
-    # Define model positions (x: explainability, y: predictive power)
-    # Scale: 0-10 where higher is better
-    models_data = [
-        ("Linear Regression", 8.5, 1, GREEN),
-        ("Logistic Regression", 7.5, 1.5, GREEN),
-        ("Decision Tree", 6.5, 2.5, GREEN),
-        ("KNN", 5.5, 3.5, GREEN),
-        ("Random Forest", 2.5, 6, ORANGE),
-        ("Boosting / Ensemble", 3.0, 6.5, ORANGE),
-        ("SVM", 2, 7, RED),
-        ("Deep Learning", 1, 8, RED),
-    ]
-
-    # Create dots and labels for each model
-    model_dots = VGroup()
-    model_labels = VGroup()
-
-    for name, x, y, color in models_data:
-        point = axes.c2p(x, y)
-        dot = Dot(point=point, radius=0.12, color=color, fill_opacity=0.9)
-        label = Tex(name, font_size=16, color=color)
-        label.next_to(dot, RIGHT, buff=0.15)
-        model_dots.add(dot)
-        model_labels.add(label)
-
-    # Animate models appearing one by one
-    scene.play(
-        *[GrowFromCenter(dot) for dot in model_dots],
-        *[Write(label) for label in model_labels],
-        run_time=2
-    )
-
-    scene.wait(1)
     scene.next_slide()
-
-    # Fade out everything for next slide
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
 
+    # ---------------------------
+    # Why XAI Matters Scene
+    # ---------------------------
     xai_matters_slide(scene)
 
+    scene.wait(0.5)
+    scene.next_slide()
+    scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
 
 def dtree_slide(scene: ThreeDSlide):
     title = Tex(r"\section*{Inherently Explainable Models}", font_size=48, color=BLUE)
@@ -686,8 +631,65 @@ def xai_matters_slide(scene: ThreeDSlide):
 
     scene.play(model_b_box.animate.set_stroke(color=GREEN, width=3), run_time=0.8)
 
-    scene.wait(1.5)
-    scene.next_slide()
 
-    # Fade out everything for next slide
-    scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
+def explain_predictive_slide(scene: ThreeDSlide):
+
+    title = Tex(
+        r"\section*{Explainability vs Predictive Power}", font_size=48, color=BLUE
+    )
+    title.to_edge(UP, buff=0.5)
+    scene.play(Write(title))
+    scene.wait(0.5)
+
+    # Create axes
+    axes = Axes(
+        x_range=[0, 10, 2],
+        y_range=[0, 10, 2],
+        x_length=8,
+        y_length=6,
+        axis_config={"color": WHITE, "include_numbers": False},
+        tips=True,
+    ).shift(DOWN * 0.3)
+
+    # Axis labels
+    x_label = Tex(r"Explainability", font_size=28, color=GREEN)
+    x_label.next_to(axes.x_axis, DOWN, buff=0.3)
+
+    y_label = Tex(r"Predictive Power / Accuracy", font_size=28, color=RED)
+    y_label.rotate(90 * DEGREES).next_to(axes.y_axis, LEFT, buff=0.3)
+
+    # Draw axes
+    scene.play(Create(axes), Write(x_label), Write(y_label), run_time=1.5)
+    scene.wait(0.5)
+
+    # Define model positions (x: explainability, y: predictive power)
+    # Scale: 0-10 where higher is better
+    models_data = [
+        ("Linear Regression", 8.5, 1, GREEN),
+        ("Logistic Regression", 7.5, 1.5, GREEN),
+        ("Decision Tree", 6.5, 2.5, GREEN),
+        ("KNN", 5.5, 3.5, GREEN),
+        ("Random Forest", 2.5, 6, ORANGE),
+        ("Boosting / Ensemble", 3.0, 6.5, ORANGE),
+        ("SVM", 2, 7, RED),
+        ("Deep Learning", 1, 8, RED),
+    ]
+
+    # Create dots and labels for each model
+    model_dots = VGroup()
+    model_labels = VGroup()
+
+    for name, x, y, color in models_data:
+        point = axes.c2p(x, y)
+        dot = Dot(point=point, radius=0.12, color=color, fill_opacity=0.9)
+        label = Tex(name, font_size=16, color=color)
+        label.next_to(dot, RIGHT, buff=0.15)
+        model_dots.add(dot)
+        model_labels.add(label)
+
+    # Animate models appearing one by one
+    scene.play(
+        *[GrowFromCenter(dot) for dot in model_dots],
+        *[Write(label) for label in model_labels],
+        run_time=2
+    )
