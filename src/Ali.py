@@ -255,12 +255,21 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     scene.next_slide()
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
     slide_number.incr()
-    
+
     # ---------------------------
     # Why XAI Matters Scene
     # ---------------------------
     xai_matters_slide(scene)
 
+    scene.wait(0.5)
+    scene.next_slide()
+    scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
+    slide_number.incr()
+
+    # ---------------------------
+    # xAI approaches and transformers
+    # ---------------------------
+    approaches_slide(scene)
     scene.wait(0.5)
     scene.next_slide()
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
@@ -693,3 +702,145 @@ def explain_predictive_slide(scene: ThreeDSlide):
         *[Write(label) for label in model_labels],
         run_time=2
     )
+
+
+def approaches_slide(scene: ThreeDSlide):
+    title = Text("Approaches to Explainability", font_size=40).to_edge(UP)
+    scene.play(Write(title))
+
+    # --- PART 1: FEATURE ATTRIBUTION (LIME/GRADCAM) ---
+    # Create an 'Input Grid' (represents an image or text tokens)
+    grid_group = VGroup()
+    squares = VGroup()
+    for i in range(3):
+        for j in range(3):
+            sq = Square(side_length=0.6, fill_opacity=0.2, color=WHITE)
+            sq.move_to(np.array([j * 0.7, -i * 0.7, 0]))
+            squares.add(sq)
+
+    grid_group.add(squares)
+    grid_group.move_to(LEFT * 3)
+
+    # Create a "Prediction Score" bar next to it
+    bar_bg = Rectangle(height=2.5, width=0.3, color=GREY)
+    bar_fill = Rectangle(
+        height=1.5, width=0.3, fill_color=GREEN, fill_opacity=1, stroke_width=0
+    )
+    bar_fill.align_to(bar_bg, DOWN)
+    bar_group = VGroup(bar_bg, bar_fill).next_to(grid_group, RIGHT, buff=0.5)
+
+    group_feature = VGroup(grid_group, bar_group)
+    label_feature = Text("Feature Attribution", font_size=24).next_to(
+        group_feature, DOWN
+    )
+
+    scene.play(FadeIn(group_feature), Write(label_feature))
+    
+    scene.wait(0.5)
+    scene.next_slide()
+    # Animation A: LIME (Occlusion Sensitivity)
+    # Blink random squares to black and move the bar
+    lime_label = Text("(e.g., LIME, Occlusion)", font_size=20, color=YELLOW).next_to(
+        label_feature, DOWN
+    )
+    scene.play(FadeIn(lime_label))
+
+    for _ in range(3):
+        # Pick random squares to "mask"
+        indices = np.random.choice(9, 3, replace=False)
+        target_squares = [squares[i] for i in indices]
+
+        scene.play(
+            *[sq.animate.set_fill(BLACK, opacity=1) for sq in target_squares],
+            bar_fill.animate.stretch_to_fit_height(
+                np.random.uniform(0.5, 2.0), about_edge=DOWN
+            ),
+            run_time=0.3
+        )
+        scene.play(
+            *[sq.animate.set_fill(WHITE, opacity=0.2) for sq in target_squares],
+            run_time=0.3
+        )
+
+    scene.play(FadeOut(lime_label))
+
+    # Animation B: GradCAM (Heatmap)
+    grad_label = Text("(e.g., GradCAM)", font_size=20, color=TEAL).next_to(
+        label_feature, DOWN
+    )
+    scene.play(FadeIn(grad_label))
+
+    # Turn squares into a heatmap colors
+    heatmap_colors = [RED, ORANGE, YELLOW, GREEN, BLUE, BLUE, RED, YELLOW, GREEN]
+    scene.play(
+        *[
+            squares[i].animate.set_fill(heatmap_colors[i], opacity=0.8)
+            for i in range(9)
+        ],
+        bar_fill.animate.stretch_to_fit_height(2.3, about_edge=DOWN),
+        run_time=1.5
+    )
+
+    scene.wait(0.5)
+    scene.next_slide()
+
+    # --- PART 2: TRANSITION TO INTERNAL ---
+    # Fade out the 'External' view slightly or move to side
+    scene.play(
+        FadeOut(grad_label),
+        group_feature.animate.scale(0.7).to_edge(LEFT),
+        label_feature.animate.scale(0.7)
+        .next_to(group_feature.target, DOWN)
+    )
+
+    # Create the "Transformer" Block Representation
+    # A stack of rectangles
+    layer_1 = Rectangle(width=3, height=0.5, color=BLUE, fill_opacity=0.3)
+    layer_2 = Rectangle(width=3, height=0.5, color=BLUE, fill_opacity=0.3)
+    layer_3 = Rectangle(width=3, height=0.5, color=BLUE, fill_opacity=0.3)
+    transformer_stack = (
+        VGroup(layer_1, layer_2, layer_3).arrange(UP, buff=0.2)
+    )
+
+    stack_label = Text("Internal Structure", font_size=24).next_to(
+        transformer_stack, DOWN
+    )
+
+    scene.play(FadeIn(transformer_stack), Write(stack_label))
+
+    # The "Tease": Inspecting the weights
+    # A magnifying glass or just a highlight effect
+    glass = Circle(radius=0.8, color=WHITE, stroke_width=4).move_to(
+        transformer_stack.get_center()
+    )
+    # Attach the handle at the circle rim at -45 degrees (down-right)
+    attach_angle = -45 * DEGREES
+    attach_point = glass.get_center() + np.array(
+        [np.cos(attach_angle), np.sin(attach_angle), 0]
+    ) * glass.radius
+    handle_length = 1.0
+    handle_end = attach_point + np.array(
+        [np.cos(attach_angle), np.sin(attach_angle), 0]
+    ) * handle_length
+    glass_handle = Line(attach_point, handle_end, stroke_width=4, color=WHITE)
+    magnifier = VGroup(glass, glass_handle)
+
+    scene.play(Create(magnifier))
+
+    # Inside the glass, show "Nodes" appearing
+    # This represents the "Interpretability" promise
+    nodes = (
+        VGroup(*[Dot(color=YELLOW).scale(0.8) for _ in range(5)])
+        .arrange(RIGHT, buff=0.2)
+        .move_to(glass.get_center())
+    )
+
+    scene.play(FadeIn(nodes))
+
+    # Final Text: The name of the approach
+    mech_label = Text(
+        "Mechanistic Interpretability", font_size=28, color=YELLOW
+    ).next_to(title, DOWN)
+    scene.play(Write(mech_label))
+
+    scene.wait(2)
