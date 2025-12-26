@@ -18,6 +18,7 @@ ENV
 # IDE files
 .vscode
 .idea
+.DS_STORE
 
 # Optional: if you use a custom config file
 # /custom_config.yml
