@@ -141,15 +141,16 @@ class SparseModelSlides:
                 active_text.animate.scale(1.2), # Slight pop effect
                 run_time=0.5
             )
-            self.scene.wait(0.2)
+            # self.scene.wait(0.2)
             # Reset
-            self.scene.play(
-                active_text.animate.scale(1/1.2),
-                run_time=0.1
-            )
-        
-        target_neuron.set_color(NEURON_COLOR)
+            # self.scene.play(
+            #     active_text.animate.scale(1/1.2),
+            #     run_time=0.1
+            # )
+            # self.scene.wait(0.2)
+        self.scene.wait(2)
         self.scene.next_slide()
+        target_neuron.set_color(NEURON_COLOR)
 
         # --- Phase 3: Transform to Sparse Model ---
         
@@ -186,14 +187,14 @@ class SparseModelSlides:
         neuron_book = current_hidden_layer[8] # Bottom
 
         mapping = [
-            ("🐱 Cat", BLUE, neuron_cat),
-            ("🚗 Car", RED, neuron_car),
-            ("📚 Book", GREEN, neuron_book)
+            (r"\faCat Cat", BLUE, neuron_cat),
+            (r"\faCar Car", RED, neuron_car),
+            (r"\faBook Book", GREEN, neuron_book)
         ]
         labels = []
         for text, color, neuron in mapping:
             # Create label directly above the specific neuron
-            label = Text(text, font_size=28, color=color)
+            label = Tex(text, tex_template=my_template, font_size=28, color=color)
             label.next_to(neuron, UP, buff=0.3)
             labels.append(label)
             
@@ -392,6 +393,7 @@ class SparseModelSlides:
                 )
 
         self.scene.wait(1)
+        self.scene.next_slide()
         self.scene.play(FadeOut(mlp_group), FadeOut(footer))
 
     def create_mlp(self, layer_dims, p_sparsity=0.0):
