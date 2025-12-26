@@ -478,6 +478,8 @@ def xai_matters_slide(scene: ThreeDSlide):
     # ---------------------------
     # Why XAI Matters Scene
     # ---------------------------
+    my_template = TexTemplate()
+    my_template.add_to_preamble(r"\usepackage{fontawesome5}")
 
     title = Tex(r"\section*{Why XAI Matters}", font_size=48, color=BLUE)
     title.to_edge(UP, buff=0.5)
@@ -490,15 +492,15 @@ def xai_matters_slide(scene: ThreeDSlide):
     left_title.shift(LEFT * 3.5 + UP * 1.5)
 
     # Icons and text for left column (using Text for icons and explanations)
-    understanding_icon = Text("👁", font_size=40).shift(LEFT * 5 + UP * 0.3)
+    understanding_icon = Tex(r"\faEye", tex_template=my_template, font_size=40).shift(LEFT * 5 + UP * 0.3)
     understanding_text = Tex(r"Understanding", font_size=22, color=WHITE)
     understanding_text.next_to(understanding_icon, RIGHT, buff=0.3)
 
-    debug_icon = Text("🛠", font_size=40).shift(LEFT * 5 + DOWN * 0.8)
+    debug_icon = Tex(r"\faTools", tex_template=my_template, font_size=40).shift(LEFT * 5 + DOWN * 0.8)
     debug_text = Tex(r"Debugging", font_size=22, color=WHITE)
     debug_text.next_to(debug_icon, RIGHT, buff=0.3)
 
-    bias_icon = Text("⚖", font_size=40).shift(LEFT * 5 + DOWN * 1.9)
+    bias_icon = Tex(r"\faBalanceScale", tex_template=my_template, font_size=40).shift(LEFT * 5 + DOWN * 1.9)
     bias_text = Tex(r"Bias Detection", font_size=22, color=WHITE)
     bias_text.next_to(bias_icon, RIGHT, buff=0.3)
 
