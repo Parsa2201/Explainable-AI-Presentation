@@ -1,7 +1,9 @@
 from manim import *
 from manim_slides.slide import ThreeDSlide
 
-def ali(scene: ThreeDSlide):
+from util.slide_number import SlideNumber
+
+def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     # ---------------------------
     # The Black Box Problem Scene
     # ---------------------------
