@@ -10,8 +10,11 @@ from src.Parsa import parsa
 Text.set_default(font="Consolas") 
 
 toc_items = [
-    "1. Introduction",
-    # new items come here
+    "1. The Black Box Problem",
+    "2. Explainability Approaches",
+    "3. Transformers & Attention",
+    "4. Sparse Models & Sparsification",
+    "5. Model Circuits & Interpretability"
 ]
 
 class Presentation(ThreeDSlide):
