@@ -318,6 +318,9 @@ def ali(scene: ThreeDSlide):
     # Fade out everything for next slide
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
 
+    xai_matters_slide(scene)
+
+
 def dtree_slide(scene: ThreeDSlide):
     title = Tex(r"\section*{Inherently Explainable Models}", font_size=48, color=BLUE)
     title.to_edge(UP, buff=0.5)
@@ -515,3 +518,176 @@ def dtree_slide(scene: ThreeDSlide):
     )
     explanation.next_to(path_label, DOWN, buff=0.3)
     scene.play(Write(explanation), run_time=1)
+
+def xai_matters_slide(scene: ThreeDSlide):
+
+    # ---------------------------
+    # Why XAI Matters Scene
+    # ---------------------------
+
+    title = Tex(r"\section*{Why XAI Matters}", font_size=48, color=BLUE)
+    title.to_edge(UP, buff=0.5)
+    scene.play(Write(title))
+    scene.wait(0.5)
+
+    # Create two-column structure
+    # Left column: Decision Understanding
+    left_title = Tex(r"\textbf{Decision Understanding}", font_size=32, color=GREEN)
+    left_title.shift(LEFT * 3.5 + UP * 1.5)
+
+    # Icons and text for left column (using Text for icons and explanations)
+    understanding_icon = Text("👁", font_size=40).shift(LEFT * 5 + UP * 0.3)
+    understanding_text = Tex(r"Understanding", font_size=22, color=WHITE)
+    understanding_text.next_to(understanding_icon, RIGHT, buff=0.3)
+
+    debug_icon = Text("🛠", font_size=40).shift(LEFT * 5 + DOWN * 0.8)
+    debug_text = Tex(r"Debugging", font_size=22, color=WHITE)
+    debug_text.next_to(debug_icon, RIGHT, buff=0.3)
+
+    bias_icon = Text("⚖", font_size=40).shift(LEFT * 5 + DOWN * 1.9)
+    bias_text = Tex(r"Bias Detection", font_size=22, color=WHITE)
+    bias_text.next_to(bias_icon, RIGHT, buff=0.3)
+
+    left_group = VGroup(
+        left_title,
+        understanding_icon,
+        understanding_text,
+        debug_icon,
+        debug_text,
+        bias_icon,
+        bias_text,
+    )
+
+    # Right column: Model Selection
+    right_title = Tex(r"\textbf{Model Selection}", font_size=32, color=ORANGE)
+    right_title.shift(RIGHT * 3.5 + UP * 1.5)
+
+    # Model A: High accuracy, no explanation (black box)
+    # Dark filled rectangle
+    model_a_box = Rectangle(
+        width=2.5, height=1.4, color=GRAY, fill_color=DARK_GRAY, fill_opacity=0.95, stroke_width=3
+    ).shift(RIGHT * 3.5 + UP * 0.3)
+
+    # Label next to the box
+    model_a_title = Tex(r"\textbf{Model A}", font_size=24, color=WHITE)
+    model_a_title.next_to(model_a_box, LEFT, buff=0.2)
+
+    # Question marks inside the dark box
+    model_a_questions = VGroup(
+        Text("?", font_size=40, color=GRAY_B),
+        Text("?", font_size=40, color=GRAY_B),
+        Text("?", font_size=40, color=GRAY_B),
+    ).arrange(RIGHT, buff=0.3).move_to(model_a_box.get_center())
+
+    # Caption below
+    model_a_caption = Tex(r"High accuracy", font_size=20, color=GREEN)
+    model_a_caption.next_to(model_a_box, DOWN, buff=0.2)
+
+    # Model B: Slightly lower accuracy, explainable
+    # Light/semi-transparent rectangle
+    model_b_box = Rectangle(
+        width=2.5, height=1.4, color=BLUE, fill_color=BLUE, fill_opacity=0.15, stroke_width=3
+    ).shift(RIGHT * 3.5 + DOWN * 2)
+
+    # Label above the box
+    model_b_title = Tex(r"\textbf{Model B}", font_size=24, color=WHITE)
+    model_b_title.next_to(model_b_box, LEFT, buff=0.2)
+
+    # Visible elements inside: feature names, rules, decision path
+    model_b_contents = VGroup(
+        Tex(r"\textbf{Features:}", font_size=14, color=WHITE),
+        Tex(r"Age, Income, Credit", font_size=12, color=BLUE_B),
+        Tex(r"\textbf{Rules:}", font_size=14, color=WHITE),
+        Tex(r"If Age $>$ 30 $\land$ Income $>$ 50k", font_size=10, color=BLUE_B),
+        Tex(r"\textbf{Decision Path}", font_size=14, color=WHITE),
+    ).arrange(DOWN, buff=0.1).move_to(model_b_box.get_center())
+
+    # Caption below
+    model_b_caption = Tex(r"Slightly lower accuracy", font_size=20, color=YELLOW)
+    model_b_caption.next_to(model_b_box, DOWN, buff=0.2)
+
+    # Arrow pointing to Model B
+    chosen_arrow = Arrow(
+        start=model_b_box.get_right() + RIGHT * 0.5,
+        end=model_b_box.get_right(),
+        color=YELLOW,
+        buff=0.1,
+        stroke_width=6,
+    )
+
+    chosen_label = Tex(r"Chosen\\Model", font_size=20, color=YELLOW)
+    chosen_label.next_to(chosen_arrow, RIGHT, buff=0.2)
+
+    right_group = VGroup(
+        right_title, 
+        model_a_box, model_a_title, model_a_questions, model_a_caption,
+        model_b_box, model_b_title, model_b_contents, model_b_caption
+    )
+
+    # Animate left column
+    scene.play(Write(left_title), run_time=0.8)
+    scene.wait(0.3)
+
+    scene.play(FadeIn(understanding_icon), Write(understanding_text), run_time=0.8)
+    scene.wait(0.2)
+
+    scene.play(FadeIn(debug_icon), Write(debug_text), run_time=0.8)
+    scene.wait(0.2)
+
+    scene.play(FadeIn(bias_icon), Write(bias_text), run_time=0.8)
+    scene.wait(0.5)
+
+    # Animate right column
+    scene.play(Write(right_title), run_time=0.8)
+    scene.wait(0.3)
+
+    # Animate Model A (black box)
+    scene.play(
+        DrawBorderThenFill(model_a_box),
+        Write(model_a_title),
+        run_time=1.2
+    )
+    scene.wait(0.3)
+    
+    scene.play(
+        *[FadeIn(q) for q in model_a_questions],
+        run_time=0.8
+    )
+    scene.wait(0.2)
+    
+    scene.play(Write(model_a_caption), run_time=0.6)
+    scene.wait(0.3)
+
+    # Animate Model B (explainable)
+    scene.play(
+        DrawBorderThenFill(model_b_box),
+        Write(model_b_title),
+        run_time=1.2
+    )
+    scene.wait(0.3)
+    
+    scene.play(
+        *[Write(content) for content in model_b_contents],
+        lag_ratio=0.2,
+        run_time=1.5
+    )
+    scene.wait(0.2)
+    
+    scene.play(Write(model_b_caption), run_time=0.6)
+    scene.wait(0.5)
+
+    # Show the choice
+    scene.play(Create(chosen_arrow), Write(chosen_label), run_time=1)
+    scene.wait(0.3)
+
+    # Highlight Model B with a pulse effect
+    scene.play(model_b_box.animate.set_stroke(color=YELLOW, width=5), run_time=0.8)
+    scene.wait(0.3)
+
+    scene.play(model_b_box.animate.set_stroke(color=GREEN, width=3), run_time=0.8)
+
+    scene.wait(1.5)
+    scene.next_slide()
+
+    # Fade out everything for next slide
+    scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
