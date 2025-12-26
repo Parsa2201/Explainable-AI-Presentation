@@ -42,7 +42,7 @@ class Presentation(ThreeDSlide):
 
         show_toc(self, toc_items)
 
-        slide_number = SlideNumber(self)
+        slide_number = SlideNumber(self, slide_count=13)
 
         ali(self, slide_number)
         parsa(self, slide_number)
@@ -80,7 +80,7 @@ class Presentation(ThreeDSlide):
 
         self.next_slide()
 
-        self.play(Unwrite(refs))
+        self.play(Unwrite(refs), Unwrite(references_title))
 
         title = Text("Thanks for watching!", font_size=72)
         title.set_color_by_gradient(BLUE, PURPLE)

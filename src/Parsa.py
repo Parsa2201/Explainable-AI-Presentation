@@ -38,6 +38,7 @@ def parsa(scene: ThreeDSlide, slide_number: SlideNumber):
     # scene.play(ReplacementTransform(what_is_attention_title, transformer_title))
     title_util.show(r"\section*{Simplified Transformer}")
     t.play_slide_two()
+    t.play_slide_three()
 
     slide_number.incr()
     # superposition_title = Tex(r"\section*{Solve superposition via sparsity}", font_size=48, color=BLUE).to_edge(UP)

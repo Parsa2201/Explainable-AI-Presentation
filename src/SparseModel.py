@@ -272,19 +272,22 @@ class SparseModelSlides:
         footer = Text("Pruning: Removing Weak Connections", font_size=24).to_edge(DOWN)
         
         self.scene.play(FadeIn(mlp_group), Write(footer))
-        self.scene.next_slide()
+        # self.scene.next_slide()
         
         # 2. Prune based on absolute value
         # We want to keep the "strongest" connections
         threshold = 0.7 # Prune anything with abs(value) < 0.4
         
         anims = []
+        # other_mobs = []
         for mob in all_elements:
             if abs(mob.value) < threshold:
                 # Option A: Fade out completely
-                anims.append(FadeOut(mob))
+                # anims.append(FadeOut(mob))
                 # Option B: Reduce opacity drastically (ghosting)
-                # anims.append(mob.animate.set_opacity(0.1))
+                anims.append(mob.animate.set_opacity(0.3))
+            # else:
+            #     other_mobs.append(mob)
         
         self.scene.play(*anims, run_time=1.5)
         self.scene.next_slide()
