@@ -21,7 +21,7 @@ class ModelCircuitSlides:
         self.scene = scene
 
     def show_circuit_from_pdf(self):
-        bracket_detector_circuit = ImageMobject("assets/bracket_detector_circuit.png").scale(0.8)
+        bracket_detector_circuit = ImageMobject("assets/bracket_detector_circuit.png").scale_to_fit_height(self.scene.camera.frame_height - 2).to_edge(DOWN)
         self.scene.play(FadeIn(bracket_detector_circuit))
         self.scene.next_slide()
         self.scene.play(FadeOut(bracket_detector_circuit))

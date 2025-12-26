@@ -18,11 +18,10 @@ class TransformerSlides:
     A class to hold the animation logic for different slides
     in a presentation about Transformers.
     """
-    def __init__(self, scene: ThreeDSlide, title: Text):
+    def __init__(self, scene: ThreeDSlide):
         self.scene = scene
-        self.title = title
 
-    def play_slide_one(self, n_dims=8, num_flashes=20, anim_run_time=3):
+    def play_slide_one(self, title, n_dims=8, num_flashes=20, anim_run_time=3):
         """
         Plays a visual-only animation of self-attention.
         1. Shows words and their initial embeddings.
@@ -52,7 +51,7 @@ class TransformerSlides:
         # self.scene.play(Write(sentence))
         self.scene.next_slide()
 
-        self.scene.play(self.sentence_and_underline.animate.next_to(self.title, DOWN))
+        self.scene.play(self.sentence_and_underline.animate.next_to(title, DOWN))
         
         # 2. Create and animate the initial embeddings appearing below the words
         # words = sentence.get_parts_by_text(" ") # This gets the individual words
@@ -108,6 +107,7 @@ class TransformerSlides:
             run_time=anim_run_time
         )
         self.scene.next_slide()
+        self.scene.play(Unwrite(self.sentence_and_underline), FadeOut(self.final_embeddings, self.initial_embeddings))
 
         return 
     
@@ -116,9 +116,6 @@ class TransformerSlides:
         Plays the animation for the third slide, showing the
         architecture of a single Transformer decoder block.
         """
-        # 1. Clean up the previous slide's objects
-        self.scene.play(Unwrite(self.sentence_and_underline), FadeOut(self.final_embeddings, self.initial_embeddings))
-        self.scene.next_slide()
 
         # 2. Define the components of our diagram
         input_vec = self.final_embeddings[0].copy().scale(0.8).to_edge(LEFT, buff=1)
