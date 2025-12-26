@@ -33,3 +33,8 @@ bash run.sh --show
 # or
 bash run.sh --show-html
 ```
+
+4. [OPTIONAL] if you need mouse button support for the presentation, run this command:
+```bash
+python input.py
+```
