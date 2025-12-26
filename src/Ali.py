@@ -6,7 +6,7 @@ def ali(scene: ThreeDSlide):
     # The Black Box Problem Scene
     # ---------------------------
 
-    title = Text("The Black Box Problem", font_size=48, color=BLUE)
+    title = Tex(r"\section*{The Black Box Problem}", font_size=48, color=BLUE)
     title.to_edge(UP, buff=0.5)
     scene.play(Write(title))
     scene.wait(0.5)
@@ -19,19 +19,19 @@ def ali(scene: ThreeDSlide):
         VGroup(
             VGroup(
                 Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Text("Age", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
+                Tex(r"Age", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
             ),
             VGroup(
                 Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Text("Income", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
+                Tex(r"Income", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
             ),
             VGroup(
                 Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Text("Credit", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
+                Tex(r"Credit", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
             ),
             VGroup(
                 Circle(radius=0.2, color=GREEN, fill_opacity=0.3),
-                Text("History", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
+                Tex(r"History", font_size=18).next_to(ORIGIN, RIGHT, buff=0.3),
             ),
         )
         .arrange(DOWN, buff=0.4)
@@ -48,19 +48,19 @@ def ali(scene: ThreeDSlide):
         stroke_width=3,
     ).shift(ORIGIN + DOWN * 0.2)
 
-    black_box_label = Text("Black Box\nModel", font_size=24, color=WHITE)
+    black_box_label = Tex(r"Black Box\\Model", font_size=24, color=WHITE)
     black_box_label.move_to(black_box.get_center() + UP * 0.8)
 
     question_mark = Text("?", font_size=80, color=YELLOW)
     question_mark.move_to(black_box.get_center() + DOWN * 0.3)
 
     # Output on the right
-    outputs_label = Text("Output", font_size=32, color=RED).shift(RIGHT * 4.5 + UP * 2)
+    outputs_label = Tex(r"\textbf{Output}", font_size=32, color=RED).shift(RIGHT * 4.5 + UP * 2)
 
     output_box = VGroup(
         Rectangle(width=2, height=1.2, color=RED, fill_opacity=0.3),
-        Text("Approve", font_size=24, color=GREEN).shift(UP * 0.2),
-        Text("Reject", font_size=24, color=RED).shift(DOWN * 0.2),
+        Tex("Approve", font_size=24, color=GREEN).shift(UP * 0.2),
+        Tex("Reject", font_size=24, color=RED).shift(DOWN * 0.2),
     ).shift(RIGHT * 4.5 + DOWN * 0.2)
 
     # Arrows
@@ -122,7 +122,7 @@ def ali(scene: ThreeDSlide):
     # ---------------------------
     
     # New title
-    new_title = Text("From Black Box to Explainable AI", font_size=48, color=BLUE)
+    new_title = Tex(r"\section*{From Black Box to Explainable AI}", font_size=48, color=BLUE)
     new_title.to_edge(UP, buff=0.5)
     scene.play(Write(new_title))
     scene.wait(0.5)
@@ -146,24 +146,24 @@ def ali(scene: ThreeDSlide):
         stroke_width=3,
     ).shift(RIGHT * 3 + DOWN * 0.2)
     
-    transparent_box_label = Text("XAI\nModel", font_size=24, color=BLUE)
+    transparent_box_label = Tex(r"XAI\\Model", font_size=24, color=BLUE)
     transparent_box_label.move_to(transparent_box.get_center() + UP * 1.3)
     
     # Create explanation icons inside transparent box
     explanations = VGroup(
-        Text("Age", font_size=16, color=WHITE),
-        Text("Income", font_size=16, color=WHITE),
-        Text("Decision Path", font_size=16, color=WHITE),
+        Tex(r"Age", font_size=16, color=WHITE),
+        Tex(r"Income", font_size=16, color=WHITE),
+        Tex(r"Decision Path", font_size=16, color=WHITE),
     ).arrange(DOWN, buff=0.3).move_to(transparent_box.get_center())
     
     # Feature importance labels on the right
-    feature_importance_label = Text("Feature Importance", font_size=20, color=YELLOW)
+    feature_importance_label = Tex(r"Feature Importance", font_size=20, color=YELLOW)
     feature_importance_label.next_to(transparent_box, RIGHT, buff=0.3).shift(UP * 1)
     
-    rules_label = Text("Decision Rules", font_size=20, color=YELLOW)
+    rules_label = Tex(r"Decision Rules", font_size=20, color=YELLOW)
     rules_label.next_to(transparent_box, RIGHT, buff=0.3)
     
-    highlights_label = Text("Key Factors", font_size=20, color=YELLOW)
+    highlights_label = Tex(r"Key Factors", font_size=20, color=YELLOW)
     highlights_label.next_to(transparent_box, RIGHT, buff=0.3).shift(DOWN * 1)
     
     # Arrows from transparent box to explanations
