@@ -241,6 +241,16 @@ def ali(scene: ThreeDSlide):
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
 
     # ---------------------------
+    # Decision Tree Explainability Scene
+    # ---------------------------
+    dtree_slide(scene)
+    scene.wait(1.5)
+    scene.next_slide()
+
+    # Fade out everything for next slide
+    scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
+
+    # ---------------------------
     # Explainability vs Predictive Power Trade-off Scene
     # ---------------------------
 
@@ -307,3 +317,201 @@ def ali(scene: ThreeDSlide):
 
     # Fade out everything for next slide
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
+
+def dtree_slide(scene: ThreeDSlide):
+    title = Tex(r"\section*{Inherently Explainable Models}", font_size=48, color=BLUE)
+    title.to_edge(UP, buff=0.5)
+    scene.play(Write(title))
+    scene.wait(0.5)
+
+    # Create decision tree nodes
+    # Root node
+    root_node = RoundedRectangle(
+        width=2.5,
+        height=0.8,
+        corner_radius=0.15,
+        color=BLUE,
+        fill_opacity=0.3,
+        stroke_width=3,
+    ).shift(UP * 2)
+
+    root_label = Tex(r"Age $>$ 30?", font_size=24, color=WHITE)
+    root_label.move_to(root_node.get_center())
+
+    # Left child node (Income decision)
+    left_node = RoundedRectangle(
+        width=2.5,
+        height=0.8,
+        corner_radius=0.15,
+        color=BLUE,
+        fill_opacity=0.3,
+        stroke_width=3,
+    ).shift(LEFT * 3 + DOWN * 0.5)
+
+    left_label = Tex(r"Income $>$ 50k?", font_size=24, color=WHITE)
+    left_label.move_to(left_node.get_center())
+
+    # Right child node (Reject)
+    right_node = RoundedRectangle(
+        width=2,
+        height=0.8,
+        corner_radius=0.15,
+        color=RED,
+        fill_opacity=0.4,
+        stroke_width=3,
+    ).shift(RIGHT * 3 + DOWN * 0.5)
+
+    right_label = Tex(r"\textbf{Reject}", font_size=24, color=WHITE)
+    right_label.move_to(right_node.get_center())
+
+    # Left-left leaf (Approve)
+    left_left_node = RoundedRectangle(
+        width=2,
+        height=0.8,
+        corner_radius=0.15,
+        color=GREEN,
+        fill_opacity=0.4,
+        stroke_width=3,
+    ).shift(LEFT * 4.5 + DOWN * 3)
+
+    left_left_label = Tex(r"\textbf{Approve}", font_size=24, color=WHITE)
+    left_left_label.move_to(left_left_node.get_center())
+
+    # Left-right leaf (Reject)
+    left_right_node = RoundedRectangle(
+        width=2,
+        height=0.8,
+        corner_radius=0.15,
+        color=RED,
+        fill_opacity=0.4,
+        stroke_width=3,
+    ).shift(LEFT * 1.5 + DOWN * 3)
+
+    left_right_label = Tex(r"\textbf{Reject}", font_size=24, color=WHITE)
+    left_right_label.move_to(left_right_node.get_center())
+
+    # Create arrows
+    # Root to left child
+    arrow_root_left = Arrow(
+        start=root_node.get_bottom() + LEFT * 0.6,
+        end=left_node.get_top() + RIGHT * 0.3,
+        color=GREEN,
+        buff=0.1,
+        stroke_width=4,
+        max_tip_length_to_length_ratio=0.2,
+    )
+    yes_label_1 = Tex("Yes", font_size=20, color=GREEN)
+    yes_label_1.next_to(arrow_root_left, LEFT, buff=0.1)
+
+    # Root to right child
+    arrow_root_right = Arrow(
+        start=root_node.get_bottom() + RIGHT * 0.6,
+        end=right_node.get_top() + LEFT * 0.3,
+        color=RED,
+        buff=0.1,
+        stroke_width=4,
+        max_tip_length_to_length_ratio=0.2,
+    )
+    no_label_1 = Tex("No", font_size=20, color=RED)
+    no_label_1.next_to(arrow_root_right, RIGHT, buff=0.1)
+
+    # Left node to left-left leaf
+    arrow_left_left = Arrow(
+        start=left_node.get_bottom() + LEFT * 0.6,
+        end=left_left_node.get_top() + RIGHT * 0.3,
+        color=GREEN,
+        buff=0.1,
+        stroke_width=4,
+        max_tip_length_to_length_ratio=0.2,
+    )
+    yes_label_2 = Tex("Yes", font_size=20, color=GREEN)
+    yes_label_2.next_to(arrow_left_left, LEFT, buff=0.05)
+
+    # Left node to left-right leaf
+    arrow_left_right = Arrow(
+        start=left_node.get_bottom() + RIGHT * 0.6,
+        end=left_right_node.get_top() + LEFT * 0.3,
+        color=RED,
+        buff=0.1,
+        stroke_width=4,
+        max_tip_length_to_length_ratio=0.2,
+    )
+    no_label_2 = Tex("No", font_size=20, color=RED)
+    no_label_2.next_to(arrow_left_right, RIGHT, buff=0.05)
+
+    # Animate the tree construction
+    
+    # Start with root node
+    scene.play(DrawBorderThenFill(root_node), Write(root_label), run_time=0.5)
+
+    # Show branches from root
+    scene.play(
+        Create(arrow_root_left),
+        Write(yes_label_1),
+        Create(arrow_root_right),
+        Write(no_label_1),
+        run_time=0.5,
+    )
+
+    # Show left and right children
+    scene.play(
+        DrawBorderThenFill(left_node),
+        Write(left_label),
+        DrawBorderThenFill(right_node),
+        Write(right_label),
+        run_time=0.5,
+    )
+
+    # Show branches from left node
+    scene.play(
+        Create(arrow_left_left),
+        Write(yes_label_2),
+        Create(arrow_left_right),
+        Write(no_label_2),
+        run_time=0.5,
+    )
+
+    # Show final leaves
+    scene.play(
+        DrawBorderThenFill(left_left_node),
+        Write(left_left_label),
+        DrawBorderThenFill(left_right_node),
+        Write(left_right_label),
+        run_time=0.5,
+    )
+
+    scene.wait(0.5)
+    scene.next_slide()
+
+    # Highlight a decision path (example: Age > 30 → Income > 50k → Approve)
+    path_label = Tex(r"Example Decision:", font_size=28, color=YELLOW)
+    path_label.next_to(right_node, DOWN, buff=1.5)
+    scene.play(Write(path_label), run_time=0.3)
+    scene.wait(0.2)
+
+    # Highlight the path
+    scene.play(
+        root_node.animate.set_stroke(color=YELLOW, width=5),
+        arrow_root_left.animate.set_color(YELLOW).set_stroke(width=6),
+        run_time=0.6,
+    )
+    scene.wait(0.2)
+
+    scene.play(
+        left_node.animate.set_stroke(color=YELLOW, width=5),
+        arrow_left_left.animate.set_color(YELLOW).set_stroke(width=6),
+        run_time=0.6,
+    )
+    scene.wait(0.2)
+
+    scene.play(left_left_node.animate.set_stroke(color=YELLOW, width=5), run_time=0.6)
+    scene.wait(0.5)
+
+    # Add explanation text
+    explanation = Tex(
+        r"Approved because Age $>$ 30 and Income $>$ 50k",
+        font_size=24,
+        color=YELLOW,
+    )
+    explanation.next_to(path_label, DOWN, buff=0.3)
+    scene.play(Write(explanation), run_time=1)
