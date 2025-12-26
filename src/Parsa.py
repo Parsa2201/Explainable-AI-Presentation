@@ -22,7 +22,7 @@ class TitleUtil:
         self.title = title
 
     def end(self):
-        self.play(Unwrite(self.title))
+        self.scene.play(Unwrite(self.title))
         self.title = None
 
 def parsa(scene: ThreeDSlide, slide_number: SlideNumber):
