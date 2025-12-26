@@ -14,7 +14,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     scene.wait(0.5)
 
     # Input features on the left
-    inputs_label = Text("Inputs", font_size=32, color=GREEN).shift(LEFT * 4.5 + UP * 2)
+    inputs_label = Tex(r"\textbf{Inputs}", font_size=32, color=GREEN).shift(LEFT * 4.5 + UP * 2)
 
     # Create input features
     input_features_dots = VGroup(
