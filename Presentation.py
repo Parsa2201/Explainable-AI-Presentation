@@ -43,3 +43,5 @@ class Presentation(ThreeDSlide):
 
         ali(self, slide_number)
         parsa(self, slide_number)
+
+        slide_number.end()

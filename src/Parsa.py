@@ -17,11 +17,14 @@ def parsa(scene: ThreeDSlide, slide_number: SlideNumber):
 
     s = SparseModelSlides(scene)
     s.play_slide_one()
+    slide_number.incr()
     s.play_slide_two()
+    slide_number.incr()
     s.play_slide_three()
+    slide_number.incr()
     s.play_slide_four()
+    slide_number.incr()
 
     m = ModelCircuitSlides(scene)
     m.show_circuit_from_pdf()
 
-    
