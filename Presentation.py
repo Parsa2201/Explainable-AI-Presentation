@@ -41,5 +41,5 @@ class Presentation(ThreeDSlide):
 
         slide_number = SlideNumber(self)
 
-        ali(self)
-        parsa(self)
+        ali(self, slide_number)
+        parsa(self, slide_number)
