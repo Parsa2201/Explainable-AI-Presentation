@@ -45,3 +45,36 @@ class Presentation(ThreeDSlide):
         parsa(self, slide_number)
 
         slide_number.end()
+
+        references_title = Tex(r"\section*{References}", font_size=48).to_edge(UP).scale(0.8)
+        self.play(Write(references_title))
+
+        ref1 = Tex(r"""
+        \begin{flushleft}
+        \hangindent=1.5em\hangafter=1
+        [1] F. K. Došilović, M. Brčić, and N. Hlupić, ``Explainable artificial intelligence: A survey,'' in \textit{Proc. 41st Int. Conv. Information and Communication Technology, Electronics and Microelectronics (MIPRO)}, pp. 0210-0215, 2018.
+        \end{flushleft}
+        """, font_size=26)
+
+        ref2 = Tex(r"""
+        \begin{flushleft}
+        \hangindent=1.5em\hangafter=1
+        [2]  L. Bereska and E. Gavves, ``Mechanistic interpretability for AI safety—A review,'' \textit{arXiv preprint arXiv:2404.14082}, 2024.
+        \end{flushleft}
+        """, font_size=26)
+
+        ref3 = Tex(r"""
+        \begin{flushleft}
+        \hangindent=1.5em\hangafter=1
+        [3] L. Gao, A. Rajaram, J. Coxon, S. V. Govande, B. Baker, and D. Mossing, ``Weight-sparse transformers have interpretable circuits,'' \textit{arXiv preprint arXiv:2511.13653}, 2025.
+        \end{flushleft}
+        """, font_size=26)
+
+        # Arrange references
+        refs = VGroup(ref1, ref2, ref3).arrange(DOWN, aligned_edge=LEFT, buff=1).next_to(references_title, DOWN, buff=0.5)
+
+        self.play(Write(refs))
+
+        self.next_slide()
+
+        
