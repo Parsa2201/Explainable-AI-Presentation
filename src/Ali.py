@@ -106,7 +106,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     scene.wait(0.5)
 
     scene.next_slide()
-
+    slide_number.incr()
     # Fade out everything except the black box, its label, and question mark
     fade_out_objects = [
         title, inputs_label, outputs_label, output_box,
@@ -233,8 +233,8 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
 
     scene.wait(0.5)
     scene.next_slide()
-
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
+    slide_number.incr()
 
     # ---------------------------
     # Decision Tree Explainability Scene
@@ -244,6 +244,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     scene.next_slide()
 
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
+    slide_number.incr()
 
     # ---------------------------
     # Explainability vs Predictive Power Trade-off Scene
@@ -253,7 +254,8 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     scene.wait(0.5)
     scene.next_slide()
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
-
+    slide_number.incr()
+    
     # ---------------------------
     # Why XAI Matters Scene
     # ---------------------------
@@ -262,6 +264,7 @@ def ali(scene: ThreeDSlide, slide_number: SlideNumber):
     scene.wait(0.5)
     scene.next_slide()
     scene.play(*[FadeOut(mob) for mob in scene.mobjects], run_time=1)
+    slide_number.incr()
 
 def dtree_slide(scene: ThreeDSlide):
     title = Tex(r"\section*{Inherently Explainable Models}", font_size=48, color=BLUE)
