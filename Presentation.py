@@ -80,4 +80,10 @@ class Presentation(ThreeDSlide):
 
         self.next_slide()
 
-        
+        self.play(Unwrite(refs))
+
+        title = Text("Thanks for watching!", font_size=72)
+        title.set_color_by_gradient(BLUE, PURPLE)
+        self.play(Write(title), run_time=2)
+
+        self.play(Circumscribe(title, color=WHITE, time_width=0.5, fade_out=True))
